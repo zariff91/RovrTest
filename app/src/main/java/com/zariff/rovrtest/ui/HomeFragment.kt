@@ -40,9 +40,9 @@ class HomeFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.act_home, container, false)
     }
@@ -79,15 +79,16 @@ class HomeFragment : Fragment() {
                     val global: GlobalData = data.global!!
 
                     val globalLocal =
-                        global.totalConfirmed?.let {
-                            global.totalDeaths?.let { it1 ->
-                                global.totalRecovered?.let { it2 ->
-                                    GlobalLocalData(1,
-                                        it, it1, it2
-                                    )
+                            global.totalConfirmed?.let {
+                                global.totalDeaths?.let { it1 ->
+                                    global.totalRecovered?.let { it2 ->
+                                        GlobalLocalData(
+                                                1,
+                                                it, it1, it2
+                                        )
+                                    }
                                 }
                             }
-                        }
 
 
                     globalLocal?.let { GlobalDatabase(activity!!).globalDao().addGlobalData(it) }
@@ -117,7 +118,7 @@ class HomeFragment : Fragment() {
 
                 } else {
                     Toast.makeText(context, "Error = " + response.errorBody(), Toast.LENGTH_LONG)
-                        .show()
+                            .show()
                     dialog?.dismiss()
 
                 }

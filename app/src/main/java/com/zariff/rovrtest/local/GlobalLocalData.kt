@@ -7,8 +7,8 @@ import androidx.room.PrimaryKey
 
 data class GlobalLocalData(
 
-    @PrimaryKey(autoGenerate = true) val id: Int,
-    val totalCases:Int,
-    val totalRecovered:Int,
-    val totalDeath:Int
+        @PrimaryKey(autoGenerate = true) val id: Int,
+        val totalCases: Int,
+        val totalRecovered: Int,
+        val totalDeath: Int
 )

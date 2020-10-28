@@ -7,9 +7,9 @@ import androidx.room.*
 interface GlobalDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addGlobalData(global:GlobalLocalData)
+    fun addGlobalData(global: GlobalLocalData)
 
     @Query("SELECT *FROM global_table")
-    fun readAllData():GlobalLocalData
+    fun readAllData(): GlobalLocalData
 
 }

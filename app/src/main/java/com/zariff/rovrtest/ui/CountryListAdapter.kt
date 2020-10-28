@@ -8,10 +8,17 @@ import com.zariff.rovrtest.R
 import com.zariff.rovrtest.model.CountryData
 import kotlinx.android.synthetic.main.item_country.view.*
 
-class CountryListAdapter(private val countryData: ArrayList<CountryData>) : RecyclerView.Adapter<CountryListAdapter.Holder>() {
+class CountryListAdapter(private val countryData: ArrayList<CountryData>) :
+        RecyclerView.Adapter<CountryListAdapter.Holder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        return Holder(LayoutInflater.from(parent.context).inflate(R.layout.item_country, parent, false))
+        return Holder(
+                LayoutInflater.from(parent.context).inflate(
+                        R.layout.item_country,
+                        parent,
+                        false
+                )
+        )
     }
 
     override fun getItemCount(): Int {
@@ -24,32 +31,32 @@ class CountryListAdapter(private val countryData: ArrayList<CountryData>) : Recy
         country.let {
             holder.countryName.text = it.country
             holder.txtNewCase.text = it.newConfirmed.let { b ->
-                when (b){
+                when (b) {
                     null -> it.searchActive.toString()
                     else -> b.toString()
                 }
             }
 
-            if(it.newConfirmed == null){
+            if (it.newConfirmed == null) {
                 holder.txtNewCase.text = "Active Cases"
             }
 
             holder.txtNewDeath.text = it.newDeaths.let { b ->
-                when (b){
+                when (b) {
                     null -> it.searchDeaths.toString()
-                    else ->b.toString()
+                    else -> b.toString()
                 }
             }
             holder.txtTotalCase.text = it.totalConfirmed.let { b ->
-                when (b){
+                when (b) {
                     null -> it.searchConfirm.toString()
-                    else ->b.toString()
+                    else -> b.toString()
                 }
             }
             holder.txtTotalRecovered.text = it.newRecovered.let { b ->
-                when (b){
+                when (b) {
                     null -> it.searchRecovered.toString()
-                    else ->b.toString()
+                    else -> b.toString()
                 }
             }
         }

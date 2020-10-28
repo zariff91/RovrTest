@@ -58,7 +58,7 @@ class CountryActivity : AppCompatActivity() {
         call.enqueue(object : Callback<DataModel> {
             override fun onFailure(call: Call<DataModel>, t: Throwable) {
                 Toast.makeText(this@CountryActivity, "No Internet Connection", Toast.LENGTH_LONG)
-                    .show()
+                        .show()
                 dialog.dismiss()
             }
 
@@ -75,8 +75,13 @@ class CountryActivity : AppCompatActivity() {
 
                     dialog.dismiss()
                 } else {
-                    Toast.makeText(this@CountryActivity, "Error" + response.errorBody(), Toast.LENGTH_LONG)
-                        .show()                  }
+                    Toast.makeText(
+                            this@CountryActivity,
+                            "Error" + response.errorBody(),
+                            Toast.LENGTH_LONG
+                    )
+                            .show()
+                }
             }
         })
     }
@@ -87,14 +92,14 @@ class CountryActivity : AppCompatActivity() {
             override fun onFailure(call: Call<Array<CountryData>>, t: Throwable) {
 
                 Toast.makeText(this@CountryActivity, "No Internet Connection", Toast.LENGTH_LONG)
-                    .show()
+                        .show()
                 noDataText.visibility = View.VISIBLE
 
             }
 
             override fun onResponse(
-                call: Call<Array<CountryData>>,
-                response: Response<Array<CountryData>>
+                    call: Call<Array<CountryData>>,
+                    response: Response<Array<CountryData>>
             ) {
                 if (response.isSuccessful) {
                     val obj = response.body()
@@ -103,13 +108,18 @@ class CountryActivity : AppCompatActivity() {
                         countryName.add(it.country!!)
                     }
                     countrySpinner.adapter = ArrayAdapter<String>(
-                        this@CountryActivity,
-                        android.R.layout.simple_list_item_1,
-                        countryName
+                            this@CountryActivity,
+                            android.R.layout.simple_list_item_1,
+                            countryName
                     )
                 } else {
-                    Toast.makeText(this@CountryActivity, "Error" + response.errorBody(), Toast.LENGTH_LONG)
-                        .show()                }
+                    Toast.makeText(
+                            this@CountryActivity,
+                            "Error" + response.errorBody(),
+                            Toast.LENGTH_LONG
+                    )
+                            .show()
+                }
             }
 
         })
@@ -121,21 +131,21 @@ class CountryActivity : AppCompatActivity() {
         dialog.show()
 
         val call = dataApi.getCountryByDate(
-            countrySpinner.selectedItem.toString(),
-            edStartDate.text.toString(),
-            edEndDate.text.toString()
+                countrySpinner.selectedItem.toString(),
+                edStartDate.text.toString(),
+                edEndDate.text.toString()
         )
 
         call.enqueue(object : Callback<List<CountryData>> {
             override fun onFailure(call: Call<List<CountryData>>, t: Throwable) {
                 Toast.makeText(this@CountryActivity, "No Internet Connection", Toast.LENGTH_LONG)
-                    .show()
+                        .show()
                 dialog.dismiss()
             }
 
             override fun onResponse(
-                call: Call<List<CountryData>>,
-                response: Response<List<CountryData>>
+                    call: Call<List<CountryData>>,
+                    response: Response<List<CountryData>>
             ) {
 
                 if (response.isSuccessful) {
@@ -177,19 +187,19 @@ class CountryActivity : AppCompatActivity() {
 
         val myCalendar = Calendar.getInstance()
         val datePickerOnDataSetListener =
-            DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-                myCalendar.set(Calendar.YEAR, year)
-                myCalendar.set(Calendar.MONTH, monthOfYear)
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                val sdf = SimpleDateFormat(format, Locale.UK)
-                setText(sdf.format(myCalendar.time))
-            }
+                DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+                    myCalendar.set(Calendar.YEAR, year)
+                    myCalendar.set(Calendar.MONTH, monthOfYear)
+                    myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                    val sdf = SimpleDateFormat(format, Locale.UK)
+                    setText(sdf.format(myCalendar.time))
+                }
 
         setOnClickListener {
             DatePickerDialog(
-                context, datePickerOnDataSetListener, myCalendar
+                    context, datePickerOnDataSetListener, myCalendar
                     .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                myCalendar.get(Calendar.DAY_OF_MONTH)
+                    myCalendar.get(Calendar.DAY_OF_MONTH)
             ).run {
                 maxDate?.time?.also { datePicker.maxDate = it }
                 show()
