@@ -12,10 +12,10 @@ interface DataApi {
     @GET("summary")
     fun getSummary(): Call<DataModel>
 
-    @GET("country/{countryName}/status/confirmed?")
+    @GET("live/country/{countryName}/status/confirmed")
     fun getCountryByDate(@Path("countryName") countryName: String,
-                         @Query("from") startDate: String,
-                         @Query("to") endDate: String): Call<List<CountryData>>
+                         @Query("to") startDate: String,
+                         @Query("from") endDate: String): Call<List<CountryData>>
 
     @GET("countries")
     fun getCountries(): Call<Array<CountryData>>

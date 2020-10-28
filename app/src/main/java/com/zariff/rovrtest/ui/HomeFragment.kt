@@ -1,7 +1,6 @@
 package com.zariff.rovrtest.ui
 
 
-import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,7 +13,6 @@ import com.zariff.rovrtest.local.GlobalDatabase
 import com.zariff.rovrtest.local.GlobalLocalData
 import com.zariff.rovrtest.service.ApiClient
 import com.zariff.rovrtest.service.DataApi
-import com.zariff.rovrtest.model.CountryData
 import com.zariff.rovrtest.model.DataModel
 import com.zariff.rovrtest.model.GlobalData
 import kotlinx.android.synthetic.main.act_home.*
@@ -28,7 +26,6 @@ import retrofit2.Response
 class HomeFragment : Fragment() {
 
     private var dataApi: DataApi = ApiClient.createApi().create(DataApi::class.java)
-    lateinit var countryDataa: List<CountryData>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,7 +39,11 @@ class HomeFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.act_home, container, false)
     }
 
@@ -57,21 +58,17 @@ class HomeFragment : Fragment() {
                 Toast.makeText(context, "No Internet Connection", Toast.LENGTH_LONG).show()
                 dialog?.dismiss()
 
-                val dataa = GlobalDatabase(activity!!).globalDao().readAllData()
+                val localGlobalData = GlobalDatabase(activity!!).globalDao().readAllData()
 
-                if(dataa == null)
-                {
+                if (localGlobalData == null) {
                     txtTotalCase.text = "No data available"
                     txtTotalDeath.text = "No data available"
                     txtTotalRecovered.text = "No data available"
 
-                }
-
-                else
-                {
-                    txtTotalCase.text = dataa.totalCases.toString()
-                    txtTotalDeath.text = dataa.totalDeath.toString()
-                    txtTotalRecovered.text = dataa.totalRecovered.toString()
+                } else {
+                    txtTotalCase.text = localGlobalData.totalCases.toString()
+                    txtTotalDeath.text = localGlobalData.totalDeath.toString()
+                    txtTotalRecovered.text = localGlobalData.totalRecovered.toString()
                 }
 
             }
@@ -80,19 +77,20 @@ class HomeFragment : Fragment() {
                 if (response.isSuccessful) {
                     val data: DataModel = response.body()!!
                     val global: GlobalData = data.global!!
-//                    countryDataa = data.countries!!
 
                     val globalLocal =
-                        global.totalConfirmed?.let { global.totalDeaths?.let { it1 ->
-                            global.totalRecovered?.let { it2 ->
-                                GlobalLocalData(it,
-                                    it1, it2
-                                )
+                        global.totalConfirmed?.let {
+                            global.totalDeaths?.let { it1 ->
+                                global.totalRecovered?.let { it2 ->
+                                    GlobalLocalData(1,
+                                        it, it1, it2
+                                    )
+                                }
                             }
-                        } }
+                        }
+
 
                     globalLocal?.let { GlobalDatabase(activity!!).globalDao().addGlobalData(it) }
-
 
                     global.let {
                         txtTotalCase.text = it.totalConfirmed.let { b ->
@@ -118,7 +116,8 @@ class HomeFragment : Fragment() {
                     dialog?.dismiss()
 
                 } else {
-                    Toast.makeText(context, "Error = " + response.errorBody(), Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Error = " + response.errorBody(), Toast.LENGTH_LONG)
+                        .show()
                     dialog?.dismiss()
 
                 }

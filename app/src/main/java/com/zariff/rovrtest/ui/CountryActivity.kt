@@ -37,8 +37,8 @@ class CountryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_country)
 
-        edStartDate.transformIntoDatePicker("yyyy-MM-dd",Date())
-        edEndDate.transformIntoDatePicker("yyyy-MM-dd",Date())
+        edStartDate.transformIntoDatePicker("yyyy-MM-dd", Date())
+        edEndDate.transformIntoDatePicker("yyyy-MM-dd", Date())
 
 
         getCountryList()
@@ -51,13 +51,14 @@ class CountryActivity : AppCompatActivity() {
 
     private fun fetchCountryList() {
 
-        var dialog = ProgresssDialog.progressDialog(this)
+        val dialog = ProgresssDialog.progressDialog(this)
         dialog.show()
 
-        val call = dataApi.getSummary()
+        val call: Call<DataModel> = dataApi.getSummary()
         call.enqueue(object : Callback<DataModel> {
             override fun onFailure(call: Call<DataModel>, t: Throwable) {
-                Toast.makeText(this@CountryActivity, "No Internet Connection", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@CountryActivity, "No Internet Connection", Toast.LENGTH_LONG)
+                    .show()
                 dialog.dismiss()
             }
 
@@ -74,8 +75,8 @@ class CountryActivity : AppCompatActivity() {
 
                     dialog.dismiss()
                 } else {
-                    //todo
-                }
+                    Toast.makeText(this@CountryActivity, "Error" + response.errorBody(), Toast.LENGTH_LONG)
+                        .show()                  }
             }
         })
     }
@@ -85,12 +86,16 @@ class CountryActivity : AppCompatActivity() {
         call.enqueue(object : Callback<Array<CountryData>> {
             override fun onFailure(call: Call<Array<CountryData>>, t: Throwable) {
 
-                Toast.makeText(this@CountryActivity, "No Internet Connection", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@CountryActivity, "No Internet Connection", Toast.LENGTH_LONG)
+                    .show()
                 noDataText.visibility = View.VISIBLE
 
             }
 
-            override fun onResponse(call: Call<Array<CountryData>>, response: Response<Array<CountryData>>) {
+            override fun onResponse(
+                call: Call<Array<CountryData>>,
+                response: Response<Array<CountryData>>
+            ) {
                 if (response.isSuccessful) {
                     val obj = response.body()
                     val countryName: ArrayList<String> = ArrayList()
@@ -98,13 +103,13 @@ class CountryActivity : AppCompatActivity() {
                         countryName.add(it.country!!)
                     }
                     countrySpinner.adapter = ArrayAdapter<String>(
-                            this@CountryActivity,
-                            android.R.layout.simple_list_item_1,
-                            countryName
+                        this@CountryActivity,
+                        android.R.layout.simple_list_item_1,
+                        countryName
                     )
                 } else {
-                    TODO("Not yet implemented")
-                }
+                    Toast.makeText(this@CountryActivity, "Error" + response.errorBody(), Toast.LENGTH_LONG)
+                        .show()                }
             }
 
         })
@@ -112,26 +117,43 @@ class CountryActivity : AppCompatActivity() {
 
     private fun fetchByDate() {
 
-        var dialog = ProgresssDialog.progressDialog(this)
+        val dialog = ProgresssDialog.progressDialog(this)
         dialog.show()
 
-        val call = dataApi.getCountryByDate(countrySpinner.selectedItem.toString(), edStartDate.text.toString(), edEndDate.text.toString())
+        val call = dataApi.getCountryByDate(
+            countrySpinner.selectedItem.toString(),
+            edStartDate.text.toString(),
+            edEndDate.text.toString()
+        )
 
         call.enqueue(object : Callback<List<CountryData>> {
             override fun onFailure(call: Call<List<CountryData>>, t: Throwable) {
-                Toast.makeText(this@CountryActivity, "No Internet Connection", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@CountryActivity, "No Internet Connection", Toast.LENGTH_LONG)
+                    .show()
                 dialog.dismiss()
             }
 
-            override fun onResponse(call: Call<List<CountryData>>, response: Response<List<CountryData>>) {
-                if (response.isSuccessful) {
-                    countryList.clear()
-                    countryList.addAll(response.body()!!)
-                    listAdapter!!.notifyDataSetChanged()
+            override fun onResponse(
+                call: Call<List<CountryData>>,
+                response: Response<List<CountryData>>
+            ) {
 
-                    if(countryList.isEmpty())
-                    {
+                if (response.isSuccessful) {
+
+                    val objCountryList = response.body()
+
+                    if (objCountryList.isNullOrEmpty()) {
+
                         noDataText.visibility = View.VISIBLE
+                        list_country.visibility = View.GONE
+
+                    } else {
+
+                        countryList.clear()
+                        objCountryList.let { countryList.addAll(it) }
+
+                        listAdapter!!.notifyDataSetChanged()
+
                     }
 
                     dialog.dismiss()

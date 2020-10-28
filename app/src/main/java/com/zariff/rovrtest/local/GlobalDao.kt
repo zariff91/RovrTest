@@ -6,13 +6,10 @@ import androidx.room.*
 @Dao
 interface GlobalDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addGlobalData(global:GlobalLocalData)
 
     @Query("SELECT *FROM global_table")
     fun readAllData():GlobalLocalData
-
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateGlobal(global: GlobalLocalData):Int
 
 }

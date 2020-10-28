@@ -23,10 +23,35 @@ class CountryListAdapter(private val countryData: ArrayList<CountryData>) : Recy
 
         country.let {
             holder.countryName.text = it.country
-            holder.txtNewCase.text = it.newConfirmed.toString()
-            holder.txtNewDeath.text = it.newDeaths.toString()
-            holder.txtTotalCase.text = it.totalConfirmed.toString()
-            holder.txtTotalRecovered.text = it.newRecovered.toString()
+            holder.txtNewCase.text = it.newConfirmed.let { b ->
+                when (b){
+                    null -> it.searchActive.toString()
+                    else -> b.toString()
+                }
+            }
+
+            if(it.newConfirmed == null){
+                holder.txtNewCase.text = "Active Cases"
+            }
+
+            holder.txtNewDeath.text = it.newDeaths.let { b ->
+                when (b){
+                    null -> it.searchDeaths.toString()
+                    else ->b.toString()
+                }
+            }
+            holder.txtTotalCase.text = it.totalConfirmed.let { b ->
+                when (b){
+                    null -> it.searchConfirm.toString()
+                    else ->b.toString()
+                }
+            }
+            holder.txtTotalRecovered.text = it.newRecovered.let { b ->
+                when (b){
+                    null -> it.searchRecovered.toString()
+                    else ->b.toString()
+                }
+            }
         }
     }
 

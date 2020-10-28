@@ -3,26 +3,37 @@ package com.zariff.rovrtest.model
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class CountryData {
+data class CountryData(
 
     @SerializedName("Country")
-    @Expose
-    val country: String? = null
+    val country: String? = null,
 
     @SerializedName("NewConfirmed")
-    @Expose
-    val newConfirmed: Int? = null
+    val newConfirmed: Int? = null,
 
     @SerializedName("TotalConfirmed")
-    @Expose
-    val totalConfirmed: Int? = null
+    val totalConfirmed: Int? = null,
 
     @SerializedName("NewDeaths")
-    @Expose
-    val newDeaths: Int? = null
+    val newDeaths: Int? = null,
 
     @SerializedName("NewRecovered")
-    @Expose
-    val newRecovered: Int? = null
+    val newRecovered: Int? = null,
 
+    @SerializedName("Confirmed")
+    val searchConfirm: Int? = null,
+
+    @SerializedName("Deaths")
+    val searchDeaths: Int? = null,
+
+    @SerializedName("Recovered")
+    val searchRecovered: Int? = null,
+
+    @SerializedName("Active")
+    val searchActive: Int? = null
+
+){
+    override fun toString(): String {
+        return "CountryData(country=$country, newConfirmed=$newConfirmed, totalConfirmed=$totalConfirmed, newDeaths=$newDeaths, newRecovered=$newRecovered, searchConfirm=$searchConfirm, searchDeaths=$searchDeaths, searchRecovered=$searchRecovered, searchActive=$searchActive)"
+    }
 }
