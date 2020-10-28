@@ -38,7 +38,10 @@ class CountryListAdapter(private val countryData: ArrayList<CountryData>) :
             }
 
             if (it.newConfirmed == null) {
-                holder.txtNewCase.text = "Active Cases"
+                holder.lblTotalCases.text = "Active Cases"
+            }
+            if (it.newDeaths == null) {
+                holder.lblTotalDeath.text = "Total Death"
             }
 
             holder.txtNewDeath.text = it.newDeaths.let { b ->
@@ -68,6 +71,10 @@ class CountryListAdapter(private val countryData: ArrayList<CountryData>) :
         val txtNewDeath = view.txtNewDeath!!
         val txtTotalCase = view.txtTotalCase!!
         val txtTotalRecovered = view.txtTotalRecovered!!
+        val lblTotalCases = view.lblNewCase!!
+        val lblTotalDeath = view.lblNewDeath!!
+
+
     }
 
 }

@@ -162,6 +162,7 @@ class CountryActivity : AppCompatActivity() {
                         countryList.clear()
                         objCountryList.let { countryList.addAll(it) }
 
+                        list_country.visibility = View.VISIBLE
                         listAdapter!!.notifyDataSetChanged()
 
                     }

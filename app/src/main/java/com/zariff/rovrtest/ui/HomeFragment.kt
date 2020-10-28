@@ -35,7 +35,6 @@ class HomeFragment : Fragment() {
         btnViewData.setOnClickListener {
             val intent = Intent(activity, CountryActivity::class.java)
             startActivity(intent)
-
         }
     }
 
@@ -70,7 +69,6 @@ class HomeFragment : Fragment() {
                     txtTotalDeath.text = localGlobalData.totalDeath.toString()
                     txtTotalRecovered.text = localGlobalData.totalRecovered.toString()
                 }
-
             }
 
             override fun onResponse(call: Call<DataModel>, response: Response<DataModel>) {

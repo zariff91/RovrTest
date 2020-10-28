@@ -15,22 +15,16 @@ abstract class GlobalDatabase : RoomDatabase() {
         private var instance: GlobalDatabase? = null
         private val LOCK = Any()
 
-        operator fun invoke(context: Context) = instance ?: synchronized(LOCK)
-        {
+        operator fun invoke(context: Context) = instance ?: synchronized(LOCK) {
             instance ?: buildDatabase(context).also {
                 instance = it
             }
         }
 
-        fun buildDatabase(context: Context) = Room.databaseBuilder(
-
-                context.applicationContext,
-                GlobalDatabase::class.java,
-                "globaldatabase"
-
-        )
-                .allowMainThreadQueries()
-                .build()
-
+        private fun buildDatabase(context: Context): GlobalDatabase {
+            return Room.databaseBuilder(context.applicationContext, GlobalDatabase::class.java, "globaldatabase")
+                    .allowMainThreadQueries()
+                    .build()
+        }
     }
 }
